@@ -1,40 +1,32 @@
-# Welcome to your Lovable project
+# EV Charging Station Management System
 
-## Project info
+## Project Overview
 
-**URL**: https://lovable.dev/projects/91d469ca-7028-41ac-893b-a0a276d3776f
+A modern EV charging station management platform with role-based dashboards for drivers, staff, and administrators.
 
-## How can I edit this code?
+## How to run this project?
 
-There are several ways of editing your application.
+**Local Development**
 
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/91d469ca-7028-41ac-893b-a0a276d3776f) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+You can clone this repo and run it locally using your preferred IDE.
 
 The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
 
-Follow these steps:
-
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
+# Step 1: Clone the repository
 git clone <YOUR_GIT_URL>
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# Step 2: Navigate to the project directory
+cd SWP391
 
-# Step 3: Install the necessary dependencies.
+# Step 3: Install the necessary dependencies
 npm i
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Step 4: Start the development server
 npm run dev
 ```
+
+## Alternative Development Methods
 
 **Edit a file directly in GitHub**
 
@@ -50,24 +42,31 @@ npm run dev
 - Click on "New codespace" to launch a new Codespace environment.
 - Edit files directly within the Codespace and commit and push your changes once you're done.
 
-## What technologies are used for this project?
+## Technologies Used
 
 This project is built with:
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+- **Vite** - Fast build tool and development server
+- **TypeScript** - Type-safe JavaScript
+- **React** - Frontend library
+- **shadcn-ui** - Modern UI components
+- **Tailwind CSS** - Utility-first CSS framework
 
-## How can I deploy this project?
+## Features
 
-Simply open [Lovable](https://lovable.dev/projects/91d469ca-7028-41ac-893b-a0a276d3776f) and click on Share -> Publish.
+- Role-based dashboards (Driver, Staff, Administrator)
+- Modern responsive design
+- Authentication system
+- EV charging station management
 
-## Can I connect a custom domain to my Lovable project?
+## Project Structure
 
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+```
+src/
+├── components/     # Reusable UI components
+├── pages/         # Application pages
+├── contexts/      # React contexts
+├── hooks/         # Custom hooks
+├── types/         # TypeScript type definitions
+└── lib/           # Utility functions
+```
