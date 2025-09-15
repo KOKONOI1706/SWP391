@@ -1,0 +1,99 @@
+-- =======================================
+-- EV Charging Station Management System
+-- PostgreSQL Schema
+-- =======================================
+
+-- 1. User
+CREATE TABLE "User" (
+    UserID SERIAL PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    Email VARCHAR(100) UNIQUE NOT NULL,
+    Phone VARCHAR(20),
+    Role VARCHAR(20) CHECK (Role IN ('Driver','Staff','Admin')) NOT NULL
+);
+
+-- 2. Vehicle
+CREATE TABLE Vehicle (
+    VehicleID SERIAL PRIMARY KEY,
+    UserID INT NOT NULL REFERENCES "User"(UserID) ON DELETE CASCADE,
+    PlateNumber VARCHAR(20) UNIQUE NOT NULL,
+    BatteryCapacity NUMERIC(6,2),
+    ConnectorType VARCHAR(20)
+);
+
+-- 3. Station
+CREATE TABLE Station (
+    StationID SERIAL PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    Location VARCHAR(200) NOT NULL,
+    TotalPoints INT DEFAULT 0
+);
+
+-- 4. ChargingPoint
+CREATE TABLE ChargingPoint (
+    PointID SERIAL PRIMARY KEY,
+    StationID INT NOT NULL REFERENCES Station(StationID) ON DELETE CASCADE,
+    Status VARCHAR(20) CHECK (Status IN ('Available','InUse','Offline')) DEFAULT 'Available',
+    ConnectorType VARCHAR(20) NOT NULL,
+    PowerKW NUMERIC(6,2),
+    PriceRate NUMERIC(10,2)
+);
+
+-- 5. Payment
+CREATE TABLE Payment (
+    PaymentID SERIAL PRIMARY KEY,
+    UserID INT NOT NULL REFERENCES "User"(UserID) ON DELETE CASCADE,
+    Method VARCHAR(30) CHECK (Method IN ('E-Wallet','Banking','Cash')),
+    Amount NUMERIC(12,2) NOT NULL,
+    Date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Status VARCHAR(20) CHECK (Status IN ('Pending','Completed','Failed')) DEFAULT 'Pending'
+);
+
+-- 6. ChargingSession
+CREATE TABLE ChargingSession (
+    SessionID SERIAL PRIMARY KEY,
+    UserID INT NOT NULL REFERENCES "User"(UserID) ON DELETE CASCADE,
+    PointID INT NOT NULL REFERENCES ChargingPoint(PointID) ON DELETE CASCADE,
+    StartTime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    EndTime TIMESTAMP,
+    EnergyConsumed NUMERIC(10,2),
+    Cost NUMERIC(12,2),
+    PaymentID INT UNIQUE REFERENCES Payment(PaymentID) ON DELETE SET NULL
+);
+
+-- 7. SubscriptionPlan
+CREATE TABLE SubscriptionPlan (
+    PlanID SERIAL PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    Type VARCHAR(20) CHECK (Type IN ('Prepaid','Postpaid','VIP')),
+    Price NUMERIC(10,2) NOT NULL,
+    Duration INT NOT NULL -- số ngày
+);
+
+-- 8. UserPlan (bảng trung gian M:N User - SubscriptionPlan)
+CREATE TABLE UserPlan (
+    UserID INT REFERENCES "User"(UserID) ON DELETE CASCADE,
+    PlanID INT REFERENCES SubscriptionPlan(PlanID) ON DELETE CASCADE,
+    StartDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    EndDate TIMESTAMP,
+    PRIMARY KEY (UserID, PlanID)
+);
+
+-- 9. Report
+CREATE TABLE Report (
+    ReportID SERIAL PRIMARY KEY,
+    AdminID INT NOT NULL REFERENCES "User"(UserID) ON DELETE CASCADE,
+    StationID INT REFERENCES Station(StationID) ON DELETE SET NULL,
+    ReportType VARCHAR(50),
+    Period VARCHAR(50),
+    DataSummary TEXT
+);
+
+-- =======================================
+-- Index gợi ý để tối ưu truy vấn
+-- =======================================
+CREATE INDEX idx_user_role ON "User"(Role);
+CREATE INDEX idx_station_location ON Station(Location);
+CREATE INDEX idx_chargingpoint_status ON ChargingPoint(Status);
+CREATE INDEX idx_chargingsession_user ON ChargingSession(UserID);
+CREATE INDEX idx_payment_user ON Payment(UserID);

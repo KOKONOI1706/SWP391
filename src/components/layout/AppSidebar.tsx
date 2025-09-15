@@ -41,6 +41,7 @@ interface NavItem {
 const navItems: NavItem[] = [
   // Driver routes
   { title: 'Dashboard', url: '/dashboard', icon: LayoutDashboard, roles: ['driver', 'staff', 'admin'] },
+  { title: 'Trips', url: '/trips', icon: Calendar, roles: ['driver'] },
   { title: 'Map', url: '/map', icon: Map, roles: ['driver'] },
   { title: 'Reservations', url: '/reservations', icon: Calendar, roles: ['driver'] },
   { title: 'Charging', url: '/charging', icon: Zap, roles: ['driver'] },
